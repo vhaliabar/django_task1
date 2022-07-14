@@ -1,0 +1,7 @@
+<h2> you are on the detail page </h2>
+
+
+
+    {{feed.user}} || {{feed.content|truncatechars:10}} || {{feed.created}}
+
+ <a href="{% url 'all_feeds' %}">return to all users feed</a>

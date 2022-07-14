@@ -1,0 +1,9 @@
+<h2>Specific user feed list placed here: </h2>
+
+{% for feed in feeds %}
+<ul>
+    <li>{{feed.user}} | {{feed.content}} | {{feed.created}}</li>
+</ul>
+ {% endfor %}
+
+ <a href="{% url 'all_feeds' %}">return to all users feed</a>

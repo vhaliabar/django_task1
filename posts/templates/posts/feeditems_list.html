@@ -1,0 +1,9 @@
+<h2>Here you have all the feed items list:</h2>
+
+{% for feed in feeds %}
+<ul>
+    <li><a href="{% url 'user_feeds' user=feed.user.id%}">{{feed.user}}</a> | {{feed.content}} | {{feed.created}} <a href={% url 'feed_detail' pk=feed.id%}>more info...</a></li>
+</ul>
+ {% endfor %}
+
+ <a href="{% url 'home' %}">return to home page</a>
