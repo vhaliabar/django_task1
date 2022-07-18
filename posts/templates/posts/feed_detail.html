@@ -9,5 +9,13 @@
  <hr>
 
  <form action={% url 'feed_like' feed.pk %} method='POST'> {% csrf_token %}
-    <button type='submit' name='feed_id' value={{ feed.id }} class='btn btn-primary btn-sm'>Like</button>
+
+    {% if liked %}
+    <button type='submit' name='feed_id' value={{ feed.id }}
+    class='btn btn-primary btn-sm'>Unlike</button>
+
+    {% else %}
+    <button type='submit' name='feed_id' value={{ feed.id }}
+    class='btn btn-primary btn-sm'>Like</button>
+    {% endif %}
   - {{ total_likes }} Likes</form>

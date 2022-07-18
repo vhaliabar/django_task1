@@ -5,9 +5,18 @@ from datetime import datetime
 from .models import RegisteredUser, FeedItem
 from django.views.generic import CreateView, UpdateView, ListView, DetailView
 from django.urls import reverse
+
+
+
 def LikeFeedView(request, pk):
     feed = get_object_or_404(FeedItem, id=request.POST.get('feed_id'))
-    feed.liked.add(request.user)
+    liked = False
+    if feed.liked.filter(id=request.user.id).exists():
+        feed.liked.remove(request.user)
+        liked=False
+    else:
+        feed.liked.add(request.user)
+        liked=True
     return HttpResponseRedirect(reverse('feed_detail', args=[str(pk)]))
 
 # Create your views here.
@@ -40,6 +49,12 @@ class FeedDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(FeedDetailView, self).get_context_data(**kwargs)
         stuff = get_object_or_404(FeedItem, id=self.kwargs['pk'])
+        
+        liked = False
+        if stuff.liked.filter(id=self.request.user.id).exists():
+            liked=True
+        
         total_likes = stuff.total_likes()
         context['total_likes'] = total_likes
+        context['liked'] = liked
         return context
