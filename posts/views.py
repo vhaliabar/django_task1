@@ -1,9 +1,14 @@
-from django.shortcuts import render
+from http.client import HTTPResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 from .models import RegisteredUser, FeedItem
 from django.views.generic import CreateView, UpdateView, ListView, DetailView
-
-
+from django.urls import reverse
+def LikeFeedView(request, pk):
+    feed = get_object_or_404(FeedItem, id=request.POST.get('feed_id'))
+    feed.liked.add(request.user)
+    return HttpResponseRedirect(reverse('feed_detail', args=[str(pk)]))
 
 # Create your views here.
 def home(request):
@@ -31,3 +36,10 @@ class FeedDetailView(DetailView):
     model = FeedItem
     context_object_name = 'feed'
     template_name = 'posts/feed_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(FeedDetailView, self).get_context_data(**kwargs)
+        stuff = get_object_or_404(FeedItem, id=self.kwargs['pk'])
+        total_likes = stuff.total_likes()
+        context['total_likes'] = total_likes
+        return context

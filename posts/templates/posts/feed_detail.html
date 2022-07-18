@@ -5,3 +5,9 @@
     {{feed.user}} || {{feed.content|truncatechars:10}} || {{feed.created}}
 
  <a href="{% url 'all_feeds' %}">return to all users feed</a>
+ <br></br>
+ <hr>
+
+ <form action={% url 'feed_like' feed.pk %} method='POST'> {% csrf_token %}
+    <button type='submit' name='feed_id' value={{ feed.id }} class='btn btn-primary btn-sm'>Like</button>
+  - {{ total_likes }} Likes</form>
